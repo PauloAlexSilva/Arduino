@@ -25,29 +25,31 @@ void loop() {
   
   Serial.println(analogRead(leituraSensor));
 
-  if (analogRead(leituraSensor) >  1000) {
+  if (analogRead(leituraSensor) >  700) {
 
     //Solo seco
-    digitalWrite(5, HIGH);  //Vermelho
+    digitalWrite(4, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
 
     delay(1000);
-    digitalWrite(5, LOW);  //Vermelho
-    digitalWrite(6, HIGH);  //Amarelo
+    
+    while (analogRead(leituraSensor) > 700) {
 
-    while (analogRead(leituraSensor) > 1000) {
+      digitalWrite(4, LOW);  //Vermelho
+      digitalWrite(6, HIGH);  //Amarelo
+    
       digitalWrite(12, HIGH);  //Rele
-      delay(1000);
+      delay(5000);
       digitalWrite(12, LOW); //Rele
 
-      delay(5000);
+      delay(1000);
     }
     digitalWrite(6, LOW);  //Amarelo
 
   } else {
 
     // solo umido
-    digitalWrite(5, LOW);  //Vermelho
+    digitalWrite(4, LOW);  //Vermelho
     digitalWrite(7, HIGH); //Verde
 
   }
