@@ -4,6 +4,8 @@ bool leituraAnterior;
 
 void setup() {
 
+  Serial.begin(9600); //Enviar e receber dados em 9600 baud
+  
   //Sensor
   pinMode(8, INPUT);
 
@@ -19,30 +21,21 @@ void setup() {
 
 void loop() {
 
-  leituraSensor = digitalRead(9);
+  
+  
+  Serial.println(analogRead(leituraSensor));
 
-  if (leituraSensor == HIGH) {
+  if (analogRead(leituraSensor) >  1000) {
 
     //Solo seco
     digitalWrite(5, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
 
-  } else {
-
-    // solo umido
-    digitalWrite(5, LOW);  //Vermelho
-    digitalWrite(7, HIGH);
-
-  }
-
-  //Acção solo seco
-  if (leituraSensor && !leituraAnterior) {
-
-    delay(5000);
+    delay(1000);
     digitalWrite(5, LOW);  //Vermelho
     digitalWrite(6, HIGH);  //Amarelo
 
-    while (digitalRead(8)) {
+    while (analogRead(leituraSensor) > 1000) {
       digitalWrite(12, HIGH);  //Rele
       delay(1000);
       digitalWrite(12, LOW); //Rele
@@ -50,7 +43,13 @@ void loop() {
       delay(5000);
     }
     digitalWrite(6, LOW);  //Amarelo
+
+  } else {
+
+    // solo umido
+    digitalWrite(5, LOW);  //Vermelho
+    digitalWrite(7, HIGH); //Verde
+
   }
 
-  leituraAnterior = leituraSensor;
 }
