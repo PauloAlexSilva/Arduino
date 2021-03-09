@@ -24,10 +24,10 @@ void setup() {
   Serial.begin(9600); //Enviar e receber dados em 9600 baud
   
   //Sensor
-  pinMode(8, INPUT);
+
 
   //Atuador
-  pinMode(12, OUTPUT);
+  pinMode(8, OUTPUT);
 
   //LEDs
   pinMode(5, OUTPUT);  //Vermelho
@@ -114,9 +114,9 @@ void loop() {
       //digitalWrite(5, LOW);  //Vermelho
       digitalWrite(6, HIGH);  //Amarelo
     
-      digitalWrite(12, HIGH);  //Rele
+      digitalWrite(8, HIGH);  //Rele
       delay(5000);
-      digitalWrite(12, LOW); //Rele
+      digitalWrite(8, LOW); //Rele
       delay(1000);
 
       // Converte valor sensor em %
