@@ -115,7 +115,7 @@ void loop() {
       digitalWrite(6, HIGH);  //Amarelo
     
       digitalWrite(8, HIGH);  //Rele
-      delay(5000);
+      delay(10000);
       digitalWrite(8, LOW); //Rele
       delay(1000);
 
