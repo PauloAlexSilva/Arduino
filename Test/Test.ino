@@ -28,6 +28,7 @@ void setup() {
 
   //Atuador
   pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
 
   //LEDs
   pinMode(5, OUTPUT);  //Vermelho
@@ -89,7 +90,7 @@ void loop() {
   Serial.println(DHT.humidity);
   
   //Solo seco
-  if (humidade < 50) {
+  if (humidade < 60) {
 
     digitalWrite(5, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
@@ -98,7 +99,7 @@ void loop() {
     lcd.print("Solo Seco");
     lcd.setCursor(0,1);  // Posiciona o cursor na primeira coluna da segunda linha
     lcd.print("A ligar rega");
-    delay(2000);
+    delay(1000);
     
     while (humidade < 50) {
       
@@ -117,6 +118,11 @@ void loop() {
       digitalWrite(8, HIGH);  //Rele
       delay(10000);
       digitalWrite(8, LOW); //Rele
+
+      digitalWrite(9, HIGH);  //Rele
+      delay(10000);
+      digitalWrite(9, LOW); //Rele
+      
       delay(1000);
 
       // Converte valor sensor em %
