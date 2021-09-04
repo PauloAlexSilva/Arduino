@@ -1,6 +1,8 @@
 #include <dht.h>
 #include <LiquidCrystal_I2C.h>
 
+
+
 //Definições
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 
@@ -47,7 +49,8 @@ void loop() {
   // Converte valor sensor em %
   humidade = analogRead(leituraSensor);
   humidade = map(humidade, 1023, 0, 0, 100);
-  
+
+  //Leitura de dar de e humidade e temperatura do ar
   int temperaturaCasa = DHT.temperature;
   int humidadeCasa = DHT.humidity;
 
@@ -71,7 +74,7 @@ void loop() {
   lcd.print(" %");
   lcd.setCursor(0,1); 
   
-  // solo umido
+  // solo humido
   lcd.print("Num Regas: ");
   lcd.print(totalRegas);
   delay(3000);
@@ -116,12 +119,8 @@ void loop() {
       digitalWrite(6, HIGH);  //Amarelo
     
       digitalWrite(8, HIGH);  //Rele
-      delay(10000);
+      delay(120000);
       digitalWrite(8, LOW); //Rele
-
-      digitalWrite(9, HIGH);  //Rele
-      delay(10000);
-      digitalWrite(9, LOW); //Rele
       
       delay(1000);
 
