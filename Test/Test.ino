@@ -93,8 +93,10 @@ void loop() {
   Serial.println(DHT.humidity);
   
   //Solo seco
-  if (humidade < 60) {
+  //if (humidade < 60) {
 
+  delay(21600000);
+  
     digitalWrite(5, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
 
@@ -104,7 +106,7 @@ void loop() {
     lcd.print("A ligar rega");
     delay(1000);
     
-    while (humidade < 50) {
+    //while (humidade < 50) {
       
       totalRegas ++;
       
@@ -127,12 +129,12 @@ void loop() {
       // Converte valor sensor em %
       humidade = analogRead(leituraSensor);
       humidade = map(humidade, 1023, 0, 0, 100);
-    }
+    //}
     digitalWrite(6, LOW);  //Amarelo
 
-  } else {
+ // } else {
   
     digitalWrite(5, LOW);  //Vermelho
     digitalWrite(7, HIGH); //Verde
-  }
+ // }
 }
