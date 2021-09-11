@@ -1,8 +1,6 @@
 #include <dht.h>
 #include <LiquidCrystal_I2C.h>
 
-
-
 //Definições
 LiquidCrystal_I2C lcd(0x3F, 16, 2);
 
@@ -13,6 +11,9 @@ int totalRegas;
 
 dht DHT;
 #define DHT11_PIN 2
+
+//Set the float sensor to pin 4
+#define Float_Switch 4
 
 void setup() {
 
@@ -26,17 +27,17 @@ void setup() {
   Serial.begin(9600); //Enviar e receber dados em 9600 baud
   
   //Sensor
-
-
+  
   //Atuador
   pinMode(8, OUTPUT);
   pinMode(9, OUTPUT);
 
   //LEDs
   pinMode(5, OUTPUT);  //Vermelho
-  pinMode(6, OUTPUT);  //Amarelo
+  pinMode(6, OUTPUT);  //Azul
   pinMode(7, OUTPUT);  //Verde
 
+  pinMode(Float_Switch, INPUT_PULLUP);
 }
 
 
@@ -91,12 +92,18 @@ void loop() {
   
   Serial.print("Humidade: ");
   Serial.println(DHT.humidity);
-  
-  //Solo seco
-  //if (humidade < 60) {
 
-  delay(21600000);
-  
+  //Se o nível de água OK pode regar
+  if(digitalRead(Float_Switch) == HIGH)
+  {
+    digitalWrite(6, HIGH); //Turn LED on
+
+    digitalWrite(5, LOW);  //Vermelho
+    digitalWrite(7, HIGH);  //Verde
+
+    //Rega de 12 em 12 horas
+    delay(43200000);
+
     digitalWrite(5, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
 
@@ -105,36 +112,51 @@ void loop() {
     lcd.setCursor(0,1);  // Posiciona o cursor na primeira coluna da segunda linha
     lcd.print("A ligar rega");
     delay(1000);
-    
-    //while (humidade < 50) {
+          
+    totalRegas ++;
       
-      totalRegas ++;
-      
-      lcd.clear();
-      lcd.print("Rega ligada");
-      lcd.setCursor(0,1);  
-      lcd.print("Humi Solo: ");
-      lcd.print(humidade);
-      lcd.print(" %");
-      
-      //digitalWrite(5, LOW);  //Vermelho
-      digitalWrite(6, HIGH);  //Amarelo
-    
-      digitalWrite(8, HIGH);  //Rele
-      delay(120000);
-      digitalWrite(8, LOW); //Rele
-      
-      delay(1000);
+    lcd.clear();
+    lcd.print("Rega ligada");
+    lcd.setCursor(0,1);  
+    lcd.print("Humi Solo: ");
+    lcd.print(humidade);
+    lcd.print(" %");
 
-      // Converte valor sensor em %
-      humidade = analogRead(leituraSensor);
-      humidade = map(humidade, 1023, 0, 0, 100);
-    //}
-    digitalWrite(6, LOW);  //Amarelo
+    //Bomba 1(Tomateiros)
+    digitalWrite(8, HIGH);  //Rele
+    //2 minutos a bomba a trabalhar
+    delay(120000);
+    digitalWrite(8, LOW); //Rele
 
- // } else {
-  
+    //Bomba 2 (Ervas)
+    digitalWrite(9, HIGH);  //Rele
+    //1 minutos a bomba a trabalhar
+    delay(120000);
+    digitalWrite(9, LOW); //Rele
+    
+    delay(1000);
+
+    // Converte valor sensor em %
+    humidade = analogRead(leituraSensor);
+    humidade = map(humidade, 1023, 0, 0, 100);
+    
     digitalWrite(5, LOW);  //Vermelho
     digitalWrite(7, HIGH); //Verde
- // }
+  }
+  
+  //Sem água - Parar bomba
+  else
+  {
+    digitalWrite(6, LOW); //Turn LED off
+
+    lcd.clear();  // Limpa o display
+    lcd.print("    SEM AGUA   ");
+    lcd.setCursor(0,1);  // Posiciona o cursor na primeira coluna da segunda linha
+    lcd.print("Humi Solo: ");
+    lcd.print(humidade);
+    lcd.print(" %");
+    delay(5000);
+  }
+  
+
 }
