@@ -126,8 +126,8 @@ void loop() {
     digitalWrite(7, HIGH);  //Verde
 
     //Rega de 8 em 8 horas
-    //delay(28800000);
-    delay(10000);
+    delay(28800000);
+    //delay(10000);
 
     digitalWrite(5, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
@@ -147,25 +147,23 @@ void loop() {
     lcd.print(soilmoisturepercent);
     lcd.print(" %");
 
-    //Bomba 1(Tomateiros)
+    //Bomba 1(Ervas)
     digitalWrite(8, HIGH);  //Rele
-    //2 minutos a bomba a trabalhar
-    //delay(120000);
-    delay(6000);
+    //1 minutos a bomba a trabalhar
+    delay(60000);
     digitalWrite(8, LOW); //Rele
 
     //Delay entre Bombas
     delay(4000);
     
-    //Bomba 2 (Ervas)
+    //Bomba 2 (Tomateiros)
     digitalWrite(9, HIGH);  //Rele
-    //1 minutos a bomba a trabalhar
-    //delay(120000);
-    delay(60000);
+    //2 minutos a bomba a trabalhar
+    delay(120000);
     digitalWrite(9, LOW); //Rele
     
     delay(1000);
-
+    
     // Converte valor sensor em %
       //humidade = analogRead(leituraSensor);
       //humidade = map(humidade, 1023, 0, 0, 100);
