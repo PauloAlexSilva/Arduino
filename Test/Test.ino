@@ -50,23 +50,20 @@ void loop() {
   DHT.read11(DHT11_PIN);
   delay(100);//Devido a um Bug no DHTLib tem que ter um pause extra
 
-  // Humidade Solo em %
-    //humidade = analogRead(leituraSensor);
-    //humidade = map(humidade, 1023, 0, 0, 100);
-    soilMoistureValue = analogRead(A0);
-    soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
-    if(soilmoisturepercent >= 100)
-    {
-      soilmoisturepercent = 100;
-    }
-    else if(soilmoisturepercent <=0)
-    {
-      soilmoisturepercent = 0;
-    }
-    else if(soilmoisturepercent >0 && soilmoisturepercent < 100)
-    {
-      soilmoisturepercent;
-    }
+  soilMoistureValue = analogRead(A0);
+  soilmoisturepercent = map(soilMoistureValue, AirValue, WaterValue, 0, 100);
+  if(soilmoisturepercent >= 100)
+  {
+    soilmoisturepercent = 100;
+  }
+  else if(soilmoisturepercent <=0)
+  {
+    soilmoisturepercent = 0;
+  }
+  else if(soilmoisturepercent >0 && soilmoisturepercent < 100)
+  {
+    soilmoisturepercent;
+  }
 
   //Leitura de dar de e humidade e temperatura do ar
     int temperaturaCasa = DHT.temperature;
@@ -93,7 +90,7 @@ void loop() {
     lcd.print(" %");
     lcd.setCursor(0,1); 
   
-  // solo humido
+  // Numero de Regas
     lcd.print("Num Regas: ");
     lcd.print(totalRegas);
     delay(3000);
@@ -104,7 +101,6 @@ void loop() {
     Serial.println(analogRead(A0));
    
     Serial.print("Humidade Solo - Valor Convertido: ");
-    //Serial.println(humidade);
     Serial.println(soilmoisturepercent);
     
     Serial.print("Temperatura Ar: ");  
@@ -116,18 +112,10 @@ void loop() {
     Serial.print("Nível de água: ");
     Serial.println(digitalRead(Float_Switch));
     
-
   //Se o nível de água OK pode regar
   if(digitalRead(Float_Switch) == HIGH)
   {
     digitalWrite(6, HIGH); //Turn LED on
-
-    digitalWrite(5, LOW);  //Vermelho
-    digitalWrite(7, HIGH);  //Verde
-
-    //Rega de 8 em 8 horas
-    delay(28800000);
-    //delay(10000);
 
     digitalWrite(5, HIGH);  //Vermelho
     digitalWrite(7, LOW);  //Verde
@@ -149,8 +137,8 @@ void loop() {
 
     //Bomba 1(Ervas)
     digitalWrite(8, HIGH);  //Rele
-    //1 minutos a bomba a trabalhar
-    delay(60000);
+    //40 segundos a bomba a trabalhar
+    delay(40000);
     digitalWrite(8, LOW); //Rele
 
     //Delay entre Bombas
@@ -163,14 +151,25 @@ void loop() {
     digitalWrite(9, LOW); //Rele
     
     delay(1000);
-    
-    // Converte valor sensor em %
-      //humidade = analogRead(leituraSensor);
-      //humidade = map(humidade, 1023, 0, 0, 100);
-    
+   
     digitalWrite(5, LOW);  //Vermelho
     digitalWrite(7, HIGH); //Verde
 
+    // Humidade do Solo
+    lcd.clear();  // Limpa o display
+    lcd.print("Humi Solo: ");
+    lcd.print(soilmoisturepercent);
+    lcd.print(" %");
+    lcd.setCursor(0,1); 
+  
+    // Numero de regas
+    lcd.print("Num Regas: ");
+    lcd.print(totalRegas);
+    delay(3000);
+
+    //Rega de 8 em 8 horas
+    delay(28800000);
+    
     if(totalRegas > 12)//reset do arduino ao fim de 4 dias
     {
       resetFunc(); //chamada reset
