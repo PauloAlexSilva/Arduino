@@ -147,7 +147,7 @@ void loop() {
     //Bomba 2 (Tomateiros)
     digitalWrite(9, HIGH);  //Rele
     //3.33 minutos a bomba a trabalhar
-    delay(200000);
+    delay(200000); 
     digitalWrite(9, LOW); //Rele
     
     delay(1000);
